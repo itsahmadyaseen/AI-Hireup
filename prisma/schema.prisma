@@ -12,9 +12,10 @@ datasource db {
 
 model User {
   id           Int       @id @default(autoincrement())
-  name         String
+  firstName         String
+  lastName         String
   email        String    @unique
-  passwordHash String
+  password String
   role         Role
   createdAt    DateTime  @default(now())
 
@@ -32,15 +33,24 @@ enum Role {
 }
 
 model Job {
-  id            Int        @id @default(autoincrement())
-  title         String
-  description   String
-  skillsRequired String
-  createdAt     DateTime   @default(now())
+  id                Int         @id @default(autoincrement())
+  title             String
+  description       String
+  skillsRequired    String
+  salary            Int         
+  status            JobStatus   @default(active)
+  applicationDeadline DateTime  
+  createdAt         DateTime    @default(now())
 
-  recruiter     User       @relation("RecruiterJobs", fields: [recruiterId], references: [id])
-  recruiterId   Int
-  applications  Application[]
+  recruiter         User        @relation("RecruiterJobs", fields: [recruiterId], references: [id])
+  recruiterId       Int
+  applications      Application[]
+}
+
+enum JobStatus {
+  active
+  inactive
+  paused
 }
 
 model Application {
@@ -76,7 +86,7 @@ model Interview {
   createdAt       DateTime   @default(now())
 
   application     Application @relation(fields: [applicationId], references: [id])
-  applicationId   Int
+  applicationId   Int   @unique   // ✅ Fix applied here
 
   recruiter       User       @relation("RecruiterInterviews", fields: [recruiterId], references: [id])
   recruiterId     Int
@@ -85,6 +95,7 @@ model Interview {
   answers         Answer[]
   session         Session?
 }
+
 
 enum InterviewStatus {
   scheduled
