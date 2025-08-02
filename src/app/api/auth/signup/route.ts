@@ -4,7 +4,15 @@ import { hashPassword, generateToken } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    const { firstName, lastName, email, password } = await request.json()
+    const body = await request.json()
+    const firstName = body.firstName?.trim()
+    const lastName = body.lastName?.trim()
+    const email = body.email?.trim().toLowerCase()
+    const password = body.password
+    const inputRole = body.role?.toLowerCase()
+
+    const allowedRoles = ['candidate', 'recruiter', 'admin']
+    const role = allowedRoles.includes(inputRole) ? inputRole : 'candidate'
 
     // Validate input
     if (!firstName || !lastName || !email || !password) {
@@ -35,26 +43,31 @@ export async function POST(request: NextRequest) {
         firstName,
         lastName,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        role
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        role: true
       }
     })
 
     // Generate token
-    const token = generateToken(user.id)
+    const token = generateToken(user.id, user.role, user.email)
 
-    // Return success response
-    return NextResponse.json({
-      message: 'User created successfully',
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
+    return NextResponse.json(
+      {
+        message: 'User created successfully',
+        user,
+        token
       },
-      token
-    }, { status: 201 })
+      { status: 201 }
+    )
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Signup error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },

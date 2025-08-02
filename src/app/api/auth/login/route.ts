@@ -4,7 +4,9 @@ import { verifyPassword, generateToken } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json()
+    const body = await request.json()
+    const email = body.email?.trim().toLowerCase()
+    const password = body.password
 
     // Validate input
     if (!email || !password) {
@@ -28,7 +30,6 @@ export async function POST(request: NextRequest) {
 
     // Verify password
     const isPasswordValid = await verifyPassword(password, user.password)
-
     if (!isPasswordValid) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
@@ -37,19 +38,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate token
-    const token = generateToken(user.id)
+    const token = generateToken(user.id, user.role, user.email)
 
-    // Return success response
-    return NextResponse.json({
-      message: 'Login successful',
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
+    // Return minimal safe user info
+    return NextResponse.json(
+      {
+        message: 'Login successful',
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          role: user.role
+        },
+        token
       },
-      token
-    }, { status: 200 })
+      { status: 200 }
+    )
 
   } catch (error) {
     console.error('Login error:', error)

@@ -11,13 +11,155 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  firstName String
-  lastName  String
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role
+  createdAt    DateTime  @default(now())
 
-  @@map("users")
+  jobs         Job[]     @relation("RecruiterJobs")
+  applications Application[]
+  interviews   Interview[] @relation("RecruiterInterviews")
+  questions    Question[]
+  answers      Answer[]
+}
+
+enum Role {
+  candidate
+  recruiter
+  admin
+}
+
+model Job {
+  id            Int        @id @default(autoincrement())
+  title         String
+  description   String
+  skillsRequired String
+  createdAt     DateTime   @default(now())
+
+  recruiter     User       @relation("RecruiterJobs", fields: [recruiterId], references: [id])
+  recruiterId   Int
+  applications  Application[]
+}
+
+model Application {
+  id           Int        @id @default(autoincrement())
+  status       ApplicationStatus @default(pending)
+  appliedAt    DateTime   @default(now())
+
+  candidate    User       @relation(fields: [candidateId], references: [id])
+  candidateId  Int
+
+  job          Job        @relation(fields: [jobId], references: [id])
+  jobId        Int
+
+  interview    Interview?
+}
+
+enum ApplicationStatus {
+  pending
+  shortlisted
+  rejected
+  interview_scheduled
+}
+
+model Interview {
+  id              Int       @id @default(autoincrement())
+  scheduledAt     DateTime
+  status          InterviewStatus @default(scheduled)
+  mode            InterviewMode   @default(video)
+  feedback        String?
+  aiFluencyScore  Float?
+  aiTone          String?
+  aiFillerWords   Int?
+  createdAt       DateTime   @default(now())
+
+  application     Application @relation(fields: [applicationId], references: [id])
+  applicationId   Int
+
+  recruiter       User       @relation("RecruiterInterviews", fields: [recruiterId], references: [id])
+  recruiterId     Int
+
+  questions       InterviewQuestion[]
+  answers         Answer[]
+  session         Session?
+}
+
+enum InterviewStatus {
+  scheduled
+  in_progress
+  completed
+  cancelled
+}
+
+enum InterviewMode {
+  video
+  audio
+  text
+}
+
+model Question {
+  id             Int       @id @default(autoincrement())
+  type           QuestionType
+  difficulty     Difficulty
+  tags           String[]
+  questionText   String
+  expectedAnswer String?
+  createdAt      DateTime  @default(now())
+
+  createdBy      User      @relation(fields: [createdById], references: [id])
+  createdById    Int
+
+  interviewQuestions InterviewQuestion[]
+  answers        Answer[]
+}
+
+enum QuestionType {
+  technical
+  behavioral
+}
+
+enum Difficulty {
+  easy
+  medium
+  hard
+}
+
+model InterviewQuestion {
+  id           Int       @id @default(autoincrement())
+  interview    Interview @relation(fields: [interviewId], references: [id])
+  interviewId  Int
+
+  question     Question  @relation(fields: [questionId], references: [id])
+  questionId   Int
+}
+
+model Answer {
+  id                Int       @id @default(autoincrement())
+  answerText        String
+  aiCompleteness    Float?
+  aiRelevance       Float?
+  aiGrammar         Float?
+  submittedAt       DateTime  @default(now())
+
+  interview         Interview @relation(fields: [interviewId], references: [id])
+  interviewId       Int
+
+  question          Question  @relation(fields: [questionId], references: [id])
+  questionId        Int
+
+  candidate         User      @relation(fields: [candidateId], references: [id])
+  candidateId       Int
+}
+
+model Session {
+  id            Int       @id @default(autoincrement())
+  startTime     DateTime
+  endTime       DateTime
+  recordingUrl  String?
+  transcript    String?
+
+  interview     Interview @relation(fields: [interviewId], references: [id])
+  interviewId   Int       @unique
 }
