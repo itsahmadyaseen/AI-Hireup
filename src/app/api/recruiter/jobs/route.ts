@@ -22,14 +22,21 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { title, description, skillsRequired, salary, applicationDeadline } =
-    await req.json();
+  const {
+    title,
+    description,
+    skillsRequired,
+    company,
+    salary,
+    applicationDeadline,
+  } = await req.json();
 
   // Validate required fields
   if (
     !title ||
     !description ||
     !skillsRequired ||
+    !company ||
     !salary ||
     !applicationDeadline
   ) {
@@ -46,6 +53,7 @@ export async function POST(req: NextRequest) {
       description,
       skillsRequired,
       salary: parseInt(salary),
+      company,
       applicationDeadline: new Date(applicationDeadline),
       recruiter: {
         connect: { id: parseInt(user.userId) },
