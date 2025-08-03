@@ -1,137 +1,122 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const router = useRouter()
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
 
-    // Validation
     if (!formData.email || !formData.password) {
-      setError('Email and password are required')
-      return
+      setError('Email and password are required');
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        }),
-      })
-
-      const data = await response.json()
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
 
       if (response.ok) {
-        // Store token in localStorage
-        localStorage.setItem('token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
-
-        // Redirect to dashboard or home page
-        router.push('/dashboard')
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        router.push('/dashboard');
       } else {
-        setError(data.error || 'Something went wrong')
+        setError(data.error || 'Something went wrong');
       }
     } catch (error) {
-      setError('Network error. Please try again.')
+      setError('Network error. Please try again.');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 p-4">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue-600 to-blue-800 rounded-full transform translate-x-32 -translate-y-32 opacity-10"></div>
-
-        <div className="relative z-10">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-blue-600 mb-2">AI-HIREUP</h1>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Log-in</h2>
-
-            {/* Login illustration placeholder */}
-            <div className="flex justify-center mb-4">
-              <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center">
-                <div className="text-white text-4xl">👤</div>
-              </div>
-            </div>
-
-            <p className="text-gray-600 text-sm mb-6">
-              Welcome back! Please login into your account.
-            </p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-indigo-600">
+            {/* You can switch this SVG for your app icon */}
+            <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path 
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              ></path>
+            </svg>
           </div>
-
-          {/* Error message */}
+          <h2 className="mb-2 text-3xl font-bold text-gray-900">Welcome back</h2>
+          <p className="text-gray-600">Sign in to your AI Interviewer account</p>
+        </div>
+        {/* Form Card */}
+        <div className="rounded-2xl bg-white p-8 shadow-xl">
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded text-center text-sm">
               {error}
             </div>
           )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* User Name (Email) */}
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                User Name
+              <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
+                Email address
               </label>
               <input
-                type="email"
+                id="email"
                 name="email"
-                placeholder="Yourname@gmail.com"
+                type="email"
+                autoComplete="email"
+                required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-500 transition-colors duration-200 focus:border-transparent focus:ring-2 focus:ring-indigo-500"
+                placeholder="Enter your email"
               />
             </div>
-
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
                 Password
               </label>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  id="password"
                   name="password"
-                  placeholder="12345678"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  required
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  required
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-12 text-gray-900 placeholder-gray-500 transition-colors duration-200 focus:border-transparent focus:ring-2 focus:ring-indigo-500"
+                  placeholder="Enter your password"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  onClick={() => setShowPassword((v) => !v)}
+                  tabIndex={-1}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-700"
                 >
                   {showPassword ? (
                     <EyeSlashIcon className="h-5 w-5" />
@@ -141,65 +126,50 @@ export default function LoginForm() {
                 </button>
               </div>
             </div>
-
-            {/* Forgot Password */}
-            <div className="text-right">
+            {/* Remember + Forgot */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                  Remember me
+                </label>
+              </div>
               <button
                 type="button"
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                onClick={() => {
-                  // Handle forgot password
-                  alert('Forgot password functionality would be implemented here')
-                }}
+                onClick={() => alert('Forgot password functionality would be implemented here')}
+                className="text-sm text-indigo-600 hover:text-indigo-500 font-medium"
               >
-                Forgot Password?
+                Forgot password?
               </button>
             </div>
-
-            {/* Submit Button */}
+            {/* Sign in button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200"
+              className="flex w-full justify-center rounded-lg border border-transparent bg-indigo-600 px-4 py-3 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Logging in...' : 'Login'}
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
-
-          {/* Social Login and New User */}
-          <div className="mt-6">
-            <div className="flex items-center justify-center space-x-4 mb-4">
-              <span className="text-sm text-gray-600">New User?</span>
-
-              {/* Social Login Icons */}
-              <div className="flex space-x-2">
-                <button className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold hover:bg-red-600 transition duration-200">
-                  G
-                </button>
-                <button className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-white text-xs font-bold hover:bg-blue-800 transition duration-200">
-                  in
-                </button>
-                <button className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold hover:bg-blue-600 transition duration-200">
-                  M
-                </button>
-              </div>
-            </div>
-
-            {/* Sign Up Link */}
-            <div className="text-center">
-              <p className="text-gray-600">
-                Don't have an account?{' '}
-                <button
-                  onClick={() => router.push('/signup')}
-                  className="text-blue-600 hover:text-blue-700 font-semibold"
-                >
-                  Sign Up
-                </button>
-              </p>
-            </div>
+          {/* Sign Up */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{' '}
+              <button
+                onClick={() => router.push('/signup')}
+                className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200"
+              >
+                Sign up
+              </button>
+            </p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
