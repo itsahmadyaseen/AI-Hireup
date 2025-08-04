@@ -1,6 +1,4 @@
-// components/SearchAndFilter.js
 import { useState } from 'react';
-import { Search, Filter, X } from 'lucide-react';
 
 export default function SearchAndFilter({ 
   searchTerm, 
@@ -41,7 +39,7 @@ export default function SearchAndFilter({
       {/* Search Bar */}
       <div className="relative mb-4">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-gray-400" />
+          <span className="text-gray-400">🔍</span>
         </div>
         <input
           type="text"
@@ -58,7 +56,7 @@ export default function SearchAndFilter({
           onClick={() => setShowFilters(!showFilters)}
           className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
         >
-          <Filter className="h-4 w-4" />
+          <span>🔽</span>
           Filters
           {hasActiveFilters && (
             <span className="bg-blue-600 text-white text-xs rounded-full px-2 py-1">
@@ -72,7 +70,7 @@ export default function SearchAndFilter({
             onClick={clearFilters}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-800 text-sm"
           >
-            <X className="h-4 w-4" />
+            <span>❌</span>
             Clear all
           </button>
         )}
@@ -150,7 +148,7 @@ export default function SearchAndFilter({
                   onClick={() => setSearchTerm('')}
                   className="ml-2 hover:text-blue-600"
                 >
-                  <X className="h-3 w-3" />
+                  ❌
                 </button>
               </span>
             )}
@@ -161,7 +159,7 @@ export default function SearchAndFilter({
                   onClick={() => setSelectedFilters(prev => ({ ...prev, jobType: '' }))}
                   className="ml-2 hover:text-green-600"
                 >
-                  <X className="h-3 w-3" />
+                  ❌
                 </button>
               </span>
             )}
@@ -172,7 +170,7 @@ export default function SearchAndFilter({
                   onClick={() => setSelectedFilters(prev => ({ ...prev, location: '' }))}
                   className="ml-2 hover:text-purple-600"
                 >
-                  <X className="h-3 w-3" />
+                  ❌
                 </button>
               </span>
             )}
@@ -183,7 +181,7 @@ export default function SearchAndFilter({
                   onClick={() => handleSkillToggle(skill)}
                   className="ml-2 hover:text-orange-600"
                 >
-                  <X className="h-3 w-3" />
+                  ❌
                 </button>
               </span>
             ))}

@@ -1,6 +1,4 @@
-// components/JobCard.js
-import { Calendar, MapPin, Building, Clock, Tag } from 'lucide-react';
-
+// If you have lucide-react installed, use this version
 export default function JobCard({ job }) {
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -34,20 +32,25 @@ export default function JobCard({ job }) {
           </span>
         </div>
 
-        {/* Company Info */}
+        {/* Company Info - Using emojis instead of lucide icons */}
         <div className="flex items-center gap-2 mb-3">
-          <Building className="h-4 w-4 text-gray-500" />
+          <span className="text-gray-500">🏢</span>
           <span className="text-gray-700 font-medium">{job.company}</span>
         </div>
 
         {/* Location */}
         <div className="flex items-center gap-2 mb-3">
-          <MapPin className="h-4 w-4 text-gray-500" />
+          <span className="text-gray-500">📍</span>
           <span className="text-gray-600">{job.location}</span>
         </div>
 
         {/* Description */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+        <p className="text-gray-600 text-sm mb-4" style={{
+          display: '-webkit-box',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden'
+        }}>
           {job.description}
         </p>
 
@@ -60,7 +63,7 @@ export default function JobCard({ job }) {
                   key={index}
                   className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700"
                 >
-                  <Tag className="h-3 w-3 mr-1" />
+                  <span className="mr-1">🏷️</span>
                   {skill}
                 </span>
               ))}
@@ -76,11 +79,11 @@ export default function JobCard({ job }) {
         {/* Footer */}
         <div className="flex justify-between items-center pt-4 border-t border-gray-100">
           <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Calendar className="h-4 w-4" />
+            <span>📅</span>
             <span>Deadline: {formatDate(job.applicationDeadline)}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Clock className="h-4 w-4" />
+            <span>🕒</span>
             <span>Posted {formatDate(job.createdAt)}</span>
           </div>
         </div>

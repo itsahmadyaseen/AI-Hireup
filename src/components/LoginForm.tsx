@@ -5,10 +5,7 @@ import { useRouter } from 'next/navigation';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -57,9 +54,8 @@ export default function LoginForm() {
         {/* Header */}
         <div className="text-center">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-xl bg-indigo-600">
-            {/* You can switch this SVG for your app icon */}
             <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path 
+              <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
@@ -70,6 +66,7 @@ export default function LoginForm() {
           <h2 className="mb-2 text-3xl font-bold text-gray-900">Welcome back</h2>
           <p className="text-gray-600">Sign in to your AI Interviewer account</p>
         </div>
+
         {/* Form Card */}
         <div className="rounded-2xl bg-white p-8 shadow-xl">
           {error && (
@@ -95,6 +92,7 @@ export default function LoginForm() {
                 placeholder="Enter your email"
               />
             </div>
+
             {/* Password */}
             <div>
               <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
@@ -126,6 +124,7 @@ export default function LoginForm() {
                 </button>
               </div>
             </div>
+
             {/* Remember + Forgot */}
             <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -147,6 +146,7 @@ export default function LoginForm() {
                 Forgot password?
               </button>
             </div>
+
             {/* Sign in button */}
             <button
               type="submit"
@@ -156,6 +156,26 @@ export default function LoginForm() {
               {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
+
+          {/* Social login */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-500 mb-3">or sign in with</p>
+            <div className="flex justify-center gap-4">
+              <button className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="h-5 w-5 mr-2" alt="Gmail" />
+                <span className="text-sm text-gray-700">Google</span>
+              </button>
+              <button className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
+                <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" className="h-5 w-5 mr-2" alt="Facebook" />
+                <span className="text-sm text-gray-700">Facebook</span>
+              </button>
+              <button className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
+                <img src="https://www.svgrepo.com/show/475689/twitter-color.svg" className="h-5 w-5 mr-2" alt="Twitter" />
+                <span className="text-sm text-gray-700">Twitter</span>
+              </button>
+            </div>
+          </div>
+
           {/* Sign Up */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">

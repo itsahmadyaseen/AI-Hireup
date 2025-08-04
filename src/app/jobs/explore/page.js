@@ -1,8 +1,7 @@
-// pages/jobs/explore.js or app/jobs/explore/page.js
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import JobCard from '../../../components/jobcard.js';
+import JobCard from '../../../components/JobCard'; // Fixed import path
 import SearchAndFilter from '../../../components/SearchAndFilter';
 
 export default function ExploreJobs() {
@@ -54,11 +53,8 @@ export default function ExploreJobs() {
   ];
 
   useEffect(() => {
-    // Replace this with your actual API call
     const fetchJobs = async () => {
       try {
-        // const response = await fetch('/api/jobs');
-        // const data = await response.json();
         setJobs(mockJobs);
         setLoading(false);
       } catch (error) {
@@ -68,7 +64,7 @@ export default function ExploreJobs() {
     };
 
     fetchJobs();
-  }, []);
+  }, [mockJobs]);
 
   // Filter and search logic
   const filteredJobs = useMemo(() => {
