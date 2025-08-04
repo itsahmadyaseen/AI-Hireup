@@ -41,6 +41,7 @@ model Job {
   status            JobStatus   @default(active)
   applicationDeadline DateTime  
   createdAt         DateTime    @default(now())
+  company           String 
 
   recruiter         User        @relation("RecruiterJobs", fields: [recruiterId], references: [id])
   recruiterId       Int
@@ -61,6 +62,7 @@ model Application {
   candidate    User       @relation(fields: [candidateId], references: [id])
   candidateId  Int
 
+  resumeUrl    String
   job          Job        @relation(fields: [jobId], references: [id])
   jobId        Int
 
