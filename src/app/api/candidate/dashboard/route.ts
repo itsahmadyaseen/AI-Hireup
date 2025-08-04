@@ -4,7 +4,7 @@ import { getLoggedInUser } from "@/lib/auth"; // You should implement this
 
 export async function GET() {
   try {
-    // 🔐 Authenticate user and ensure candidate access
+    // Authenticate user and ensure candidate access
     const user = await getLoggedInUser();
     if (!user || user.role !== "candidate") {
       return NextResponse.json(
