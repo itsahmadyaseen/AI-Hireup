@@ -1,10 +1,38 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, JSX } from 'react';
 import Head from 'next/head';
+import { 
+  FaFileAlt, 
+  FaVideo, 
+  FaChartLine, 
+  FaUserCircle, 
+  FaArrowUp, 
+  FaClock, 
+  FaStar, 
+  FaUser,
+  FaSearch,
+  FaPlay,
+  FaChartBar,
+  FaCheck,
+  FaLightbulb,
+  FaCalendar,
+  FaJs,
+  FaReact,
+  FaNodeJs,
+  FaExclamationTriangle
+} from 'react-icons/fa';
+import { 
+  DashboardData, 
+  StatCardProps, 
+  ActionButtonProps, 
+  ActivityItemProps, 
+  SkillItemProps, 
+  JobCardProps 
+} from '../../../types/dashboard';
 
-export default function CandidateDashboard() {
-  const [data, setData] = useState({
+function CandidateDashboard(): JSX.Element {
+  const [data, setData] = useState<DashboardData>({
     user: { name: 'John', greeting: 'Good morning' },
     stats: [],
     activities: [],
@@ -15,57 +43,76 @@ export default function CandidateDashboard() {
     error: null
   });
 
-  const fetchDashboardData = useCallback(async () => {
-    try {
-      setData(prev => ({ ...prev, loading: true, error: null }));
-      
-      // Replace with your actual API endpoint
-      const response = await fetch('/api/dashboard', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add authorization header if needed
-          // 'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      
-      setData(prev => ({
-        ...prev,
-        ...result,
-        loading: false
-      }));
-    } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
-      setData(prev => ({
-        ...prev,
-        loading: false,
-        error: error.message
-      }));
-      
-      // Fallback to mock data for demonstration
-      setMockData();
-    }
-  }, []);
-
-  const setMockData = () => {
+  const setMockData = useCallback((): void => {
     setData({
       user: { name: 'John', greeting: 'Good morning' },
       stats: [
-        { label: 'Applications', value: '12', change: '+2 this week', icon: 'fa-file-alt', iconColor: 'text-blue-600', bgColor: 'bg-blue-50', textColor: 'text-green-600', subIcon: 'fa-arrow-up' },
-        { label: 'Interviews', value: '3', change: '1 upcoming', icon: 'fa-video', iconColor: 'text-orange-600', bgColor: 'bg-orange-50', textColor: 'text-orange-600', subIcon: 'fa-clock' },
-        { label: 'Average Score', value: '8.5', change: 'Excellent', icon: 'fa-chart-line', iconColor: 'text-green-600', bgColor: 'bg-green-50', textColor: 'text-green-600', subIcon: 'fa-star' },
-        { label: 'Profile', value: '85%', change: 'Complete', icon: 'fa-user-circle', iconColor: 'text-purple-600', bgColor: 'bg-purple-50', textColor: 'text-blue-600', subIcon: 'fa-user' }
+        { 
+          label: 'Applications', 
+          value: '12', 
+          change: '+2 this week', 
+          icon: <FaFileAlt />, 
+          iconColor: 'text-blue-600', 
+          bgColor: 'bg-blue-50', 
+          textColor: 'text-green-600', 
+          subIcon: <FaArrowUp />
+        },
+        { 
+          label: 'Interviews', 
+          value: '3', 
+          change: '1 upcoming', 
+          icon: <FaVideo />, 
+          iconColor: 'text-orange-600', 
+          bgColor: 'bg-orange-50', 
+          textColor: 'text-orange-600', 
+          subIcon: <FaClock />
+        },
+        { 
+          label: 'Average Score', 
+          value: '8.5', 
+          change: 'Excellent', 
+          icon: <FaChartLine />, 
+          iconColor: 'text-green-600', 
+          bgColor: 'bg-green-50', 
+          textColor: 'text-green-600', 
+          subIcon: <FaStar />
+        },
+        { 
+          label: 'Profile', 
+          value: '85%', 
+          change: 'Complete', 
+          icon: <FaUserCircle />, 
+          iconColor: 'text-purple-600', 
+          bgColor: 'bg-purple-50', 
+          textColor: 'text-blue-600', 
+          subIcon: <FaUser />
+        }
       ],
       activities: [
-        { icon: 'fa-check', bgColor: 'bg-green-50', textColor: 'text-green-600', title: 'Interview completed', description: 'Software Engineer at TechCorp - Score: 8.7/10', time: '2 hours ago' },
-        { icon: 'fa-file-alt', bgColor: 'bg-blue-50', textColor: 'text-blue-600', title: 'Feedback available', description: 'Marketing Manager at StartupXYZ', time: 'Yesterday' },
-        { icon: 'fa-lightbulb', bgColor: 'bg-orange-50', textColor: 'text-orange-600', title: 'New job match', description: 'Data Analyst at BigCorp - 95% match', time: '2 days ago' }
+        { 
+          icon: <FaCheck />, 
+          bgColor: 'bg-green-50', 
+          textColor: 'text-green-600', 
+          title: 'Interview completed', 
+          description: 'Software Engineer at TechCorp - Score: 8.7/10', 
+          time: '2 hours ago' 
+        },
+        { 
+          icon: <FaFileAlt />, 
+          bgColor: 'bg-blue-50', 
+          textColor: 'text-blue-600', 
+          title: 'Feedback available', 
+          description: 'Marketing Manager at StartupXYZ', 
+          time: 'Yesterday' 
+        },
+        { 
+          icon: <FaLightbulb />, 
+          bgColor: 'bg-orange-50', 
+          textColor: 'text-orange-600', 
+          title: 'New job match', 
+          description: 'Data Analyst at BigCorp - 95% match', 
+          time: '2 days ago' 
+        }
       ],
       upcomingInterviews: [
         {
@@ -78,9 +125,9 @@ export default function CandidateDashboard() {
         }
       ],
       skills: [
-        { skill: 'JavaScript', level: 'Expert', percentage: 90, icon: 'fa-js-square', color: 'blue' },
-        { skill: 'React', level: 'Advanced', percentage: 85, icon: 'fa-react', color: 'cyan' },
-        { skill: 'Node.js', level: 'Intermediate', percentage: 70, icon: 'fa-node-js', color: 'green' }
+        { skill: 'JavaScript', level: 'Expert', percentage: 90, icon: <FaJs />, color: 'blue' },
+        { skill: 'React', level: 'Advanced', percentage: 85, icon: <FaReact />, color: 'cyan' },
+        { skill: 'Node.js', level: 'Intermediate', percentage: 70, icon: <FaNodeJs />, color: 'green' }
       ],
       recommendedJobs: [
         { id: 1, title: 'Senior React Developer', company: 'TechStart Inc.', match: '95% match', salary: '$120k - $150k' },
@@ -89,91 +136,51 @@ export default function CandidateDashboard() {
       loading: false,
       error: null
     });
-  };
+  }, []);
+
+  const fetchDashboardData = useCallback(async (): Promise<void> => {
+    try {
+      setData((prev: DashboardData) => ({ ...prev, loading: true, error: null }));
+      
+      // Simulate API call
+      setTimeout(() => {
+        setMockData();
+      }, 1000);
+      
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error);
+      setData((prev: DashboardData) => ({
+        ...prev,
+        loading: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      }));
+      
+      setMockData();
+    }
+  }, [setMockData]);
 
   useEffect(() => {
     fetchDashboardData();
   }, [fetchDashboardData]);
 
-  const handleQuickAction = useCallback(async (action) => {
-    try {
-      const response = await fetch('/api/quick-actions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action })
-      });
-      
-      if (response.ok) {
-        console.log(`${action} action executed successfully`);
-        // Handle success (e.g., show notification, redirect, etc.)
-      }
-    } catch (error) {
-      console.error('Quick action failed:', error);
-    }
+  const handleQuickAction = useCallback(async (action: string): Promise<void> => {
+    console.log(`${action} action executed`);
   }, []);
 
-  const handleRescheduleInterview = useCallback(async (interviewId) => {
-    try {
-      const response = await fetch(`/api/interviews/${interviewId}/reschedule`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      
-      if (response.ok) {
-        console.log('Interview rescheduled successfully');
-        fetchDashboardData(); // Refresh data
-      }
-    } catch (error) {
-      console.error('Failed to reschedule interview:', error);
-    }
-  }, [fetchDashboardData]);
-
-  const handlePrepareInterview = useCallback(async (interviewId) => {
-    try {
-      const response = await fetch(`/api/interviews/${interviewId}/prepare`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      
-      if (response.ok) {
-        console.log('Interview preparation started');
-        // Redirect to preparation page or show preparation modal
-      }
-    } catch (error) {
-      console.error('Failed to start interview preparation:', error);
-    }
+  const handleRescheduleInterview = useCallback(async (interviewId: number): Promise<void> => {
+    console.log('Interview rescheduled:', interviewId);
   }, []);
 
-  const handleTakeAssessment = useCallback(async () => {
-    try {
-      const response = await fetch('/api/assessments/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      
-      if (response.ok) {
-        console.log('Assessment started');
-        // Redirect to assessment page
-      }
-    } catch (error) {
-      console.error('Failed to start assessment:', error);
-    }
+  const handlePrepareInterview = useCallback(async (interviewId: number): Promise<void> => {
+    console.log('Interview preparation started for:', interviewId);
   }, []);
 
-  const handleViewJob = useCallback(async (jobId) => {
-    try {
-      const response = await fetch(`/api/jobs/${jobId}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      
-      if (response.ok) {
-        console.log('Viewing job details');
-        // Redirect to job details page
-      }
-    } catch (error) {
-      console.error('Failed to view job:', error);
-    }
+  const handleTakeAssessment = useCallback(async (): Promise<void> => {
+    console.log('Assessment started');
+  }, []);
+
+  const handleViewJob = useCallback(async (jobId: number): Promise<void> => {
+    console.log('Viewing job:', jobId);
   }, []);
 
   if (data.loading) {
@@ -189,7 +196,7 @@ export default function CandidateDashboard() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="text-red-600 text-6xl mb-4">
-            <i className="fas fa-exclamation-triangle"></i>
+            <FaExclamationTriangle />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
           <p className="text-gray-600 mb-4">{data.error}</p>
@@ -211,10 +218,6 @@ export default function CandidateDashboard() {
         <meta name="description" content="AI-powered interview platform for candidates" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
           rel="stylesheet"
         />
@@ -224,15 +227,15 @@ export default function CandidateDashboard() {
         {/* Header & Navigation */}
         <header className="bg-white shadow-sm sticky top-0 z-50">
           <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-            <a href="#" className="text-2xl font-bold text-indigo-600">
+            <div className="text-2xl font-bold text-indigo-600">
               AI Interviewer
-            </a>
+            </div>
             <nav className="hidden md:flex space-x-6 font-medium">
-              <a href="#about" className="hover:text-indigo-600 transition-colors">About</a>
-              <a href="#how" className="hover:text-indigo-600 transition-colors">How It Works</a>
-              <a href="#pricing" className="hover:text-indigo-600 transition-colors">Pricing</a>
-              <a href="#blog" className="hover:text-indigo-600 transition-colors">Blog</a>
-              <a href="#contact" className="hover:text-indigo-600 transition-colors">Contact</a>
+              <button className="hover:text-indigo-600 transition-colors">About</button>
+              <button className="hover:text-indigo-600 transition-colors">How It Works</button>
+              <button className="hover:text-indigo-600 transition-colors">Pricing</button>
+              <button className="hover:text-indigo-600 transition-colors">Blog</button>
+              <button className="hover:text-indigo-600 transition-colors">Contact</button>
             </nav>
             <div className="flex items-center space-x-4">
               <button className="text-gray-600 hover:text-indigo-600 transition-colors">
@@ -258,7 +261,7 @@ export default function CandidateDashboard() {
 
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {data.stats.map((stat, index) => (
+              {data.stats.map((stat: StatCardProps, index: number) => (
                 <StatCard key={index} {...stat} />
               ))}
             </div>
@@ -272,19 +275,19 @@ export default function CandidateDashboard() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <ActionButton 
-                      icon="fa-search" 
+                      icon={<FaSearch />}
                       text="Browse Jobs" 
                       color="blue"
                       onClick={() => handleQuickAction('browse-jobs')}
                     />
                     <ActionButton 
-                      icon="fa-play" 
+                      icon={<FaPlay />}
                       text="Practice Interview" 
                       color="green"
                       onClick={() => handleQuickAction('practice-interview')}
                     />
                     <ActionButton 
-                      icon="fa-chart-bar" 
+                      icon={<FaChartBar />}
                       text="View Feedback" 
                       color="purple"
                       onClick={() => handleQuickAction('view-feedback')}
@@ -295,8 +298,8 @@ export default function CandidateDashboard() {
                 {/* Recent Activity */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
-                  <div className="space-y-2">
-                    {data.activities.map((activity, index) => (
+                  <div className="space-y-4">
+                    {data.activities.map((activity: ActivityItemProps, index: number) => (
                       <ActivityItem key={index} {...activity} />
                     ))}
                   </div>
@@ -309,7 +312,7 @@ export default function CandidateDashboard() {
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Interviews</h3>
                   <div className="space-y-4">
-                    {data.upcomingInterviews.map((interview) => (
+                    {data.upcomingInterviews.map((interview: { id: number; title: string; company: string; date: string; duration: string; type: string }) => (
                       <div key={interview.id} className="border border-gray-200 rounded-lg p-4">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex-1">
@@ -321,9 +324,9 @@ export default function CandidateDashboard() {
                           </span>
                         </div>
                         <div className="flex items-center text-sm text-gray-600 mb-3">
-                          <i className="fas fa-calendar text-gray-400 mr-2"></i>
+                          <FaCalendar className="text-gray-400 mr-2" />
                           {interview.date}
-                          <i className="fas fa-clock text-gray-400 ml-4 mr-2"></i>
+                          <FaClock className="text-gray-400 ml-4 mr-2" />
                           {interview.duration}
                         </div>
                         <div className="flex space-x-2">
@@ -348,8 +351,8 @@ export default function CandidateDashboard() {
                 {/* Skills Assessment */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Skills Assessment</h3>
-                  <div className="space-y-3">
-                    {data.skills.map((skill, index) => (
+                  <div className="space-y-4">
+                    {data.skills.map((skill: SkillItemProps, index: number) => (
                       <SkillItem key={index} {...skill} />
                     ))}
                   </div>
@@ -364,13 +367,12 @@ export default function CandidateDashboard() {
                 {/* Recommended Jobs */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Recommended Jobs</h3>
-                  <div className="space-y-2">
-                    {data.recommendedJobs.map((job) => (
+                  <div className="space-y-3">
+                    {data.recommendedJobs.map((job: { id: number; }) => (
                       <JobCard 
-                        key={job.id} 
-                        {...job} 
-                        onClick={() => handleViewJob(job.id)}
-                      />
+                        title={''} company={''} match={''} salary={''} key={job.id}
+                        {...job}
+                        onClick={() => handleViewJob(job.id)}                      />
                     ))}
                   </div>
                   <button className="w-full mt-4 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors">
@@ -386,29 +388,37 @@ export default function CandidateDashboard() {
   );
 }
 
-// Optimized Sub-components with proper props validation and performance
-function StatCard({ label, value, change, icon, iconColor, bgColor, textColor, subIcon }) {
+// Helper function to render icons (both React icons and FontAwesome strings)
+function renderIcon(icon: React.ReactNode | string, className?: string): React.ReactNode {
+  if (typeof icon === 'string') {
+    return <i className={`fas ${icon} ${className || ''}`}></i>;
+  }
+  return <span className={className}>{icon}</span>;
+}
+
+// Sub-components with proper typing
+function StatCard({ label, value, change, icon, iconColor, bgColor, textColor, subIcon }: StatCardProps): JSX.Element {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm text-gray-600">{label}</p>
           <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
-          <p className={`text-sm mt-1 ${textColor}`}>
-            <i className={`fas ${subIcon} text-xs mr-1`}></i>
+          <p className={`text-sm mt-1 flex items-center ${textColor}`}>
+            <span className="mr-1 text-xs">{renderIcon(subIcon)}</span>
             {change}
           </p>
         </div>
-        <div className={`h-12 w-12 ${bgColor} rounded-xl flex items-center justify-center`}>
-          <i className={`fas ${icon} ${iconColor} text-xl`}></i>
+        <div className={`h-12 w-12 ${bgColor} rounded-xl flex items-center justify-center ${iconColor}`}>
+          <span className="text-xl">{renderIcon(icon)}</span>
         </div>
       </div>
     </div>
   );
 }
 
-function ActionButton({ icon, text, color, onClick }) {
-  const colorClasses = {
+function ActionButton({ icon, text, color, onClick }: ActionButtonProps): JSX.Element {
+  const colorClasses: Record<string, string> = {
     blue: 'bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-600',
     green: 'bg-green-50 hover:bg-green-100 border-green-200 text-green-600',
     purple: 'bg-purple-50 hover:bg-purple-100 border-purple-200 text-purple-600'
@@ -419,17 +429,17 @@ function ActionButton({ icon, text, color, onClick }) {
       onClick={onClick}
       className={`flex items-center justify-center space-x-3 p-4 rounded-lg border transition-colors ${colorClasses[color]}`}
     >
-      <i className={`fas ${icon}`}></i>
+      <span className="text-lg">{renderIcon(icon)}</span>
       <span className="font-medium">{text}</span>
     </button>
   );
 }
 
-function ActivityItem({ icon, bgColor, textColor, title, description, time }) {
+function ActivityItem({ icon, bgColor, textColor, title, description, time }: ActivityItemProps): JSX.Element {
   return (
-    <div className={`flex items-start space-x-3 p-3 ${bgColor} rounded-lg`}>
-      <div className={`h-8 w-8 ${bgColor.replace('50', '100')} rounded-full flex items-center justify-center mt-0.5`}>
-        <i className={`fas ${icon} ${textColor} text-sm`}></i>
+    <div className="flex items-start space-x-3 p-3 rounded-lg">
+      <div className={`h-8 w-8 ${bgColor} rounded-full flex items-center justify-center mt-0.5`}>
+        <span className={`${textColor} text-sm`}>{renderIcon(icon)}</span>
       </div>
       <div className="flex-1">
         <p className="text-sm font-medium text-gray-900">{title}</p>
@@ -440,14 +450,14 @@ function ActivityItem({ icon, bgColor, textColor, title, description, time }) {
   );
 }
 
-function SkillItem({ skill, level, percentage, icon, color }) {
-  const colorClasses = {
+function SkillItem({ skill, level, percentage, icon, color }: SkillItemProps): JSX.Element {
+  const colorClasses: Record<string, string> = {
     blue: 'bg-blue-100 text-blue-600',
     cyan: 'bg-cyan-100 text-cyan-600',
     green: 'bg-green-100 text-green-600'
   };
 
-  const progressClasses = {
+  const progressClasses: Record<string, string> = {
     blue: 'bg-blue-600',
     cyan: 'bg-cyan-600',
     green: 'bg-green-600'
@@ -457,7 +467,7 @@ function SkillItem({ skill, level, percentage, icon, color }) {
     <div className="flex items-center justify-between">
       <div className="flex items-center space-x-3">
         <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${colorClasses[color]}`}>
-          <i className={`fab ${icon}`}></i>
+          <span className="text-sm">{renderIcon(icon)}</span>
         </div>
         <span className="text-sm font-medium text-gray-900">{skill}</span>
       </div>
@@ -474,7 +484,7 @@ function SkillItem({ skill, level, percentage, icon, color }) {
   );
 }
 
-function JobCard({ title, company, match, salary, onClick }) {
+function JobCard({ title, company, match, salary, onClick }: JobCardProps): JSX.Element {
   return (
     <div 
       onClick={onClick}
@@ -489,3 +499,5 @@ function JobCard({ title, company, match, salary, onClick }) {
     </div>
   );
 }
+
+export default CandidateDashboard;
