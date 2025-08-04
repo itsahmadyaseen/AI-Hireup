@@ -1,10 +1,17 @@
 // /app/api/admin/dashboard/
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { InterviewStatus } from "@prisma/client";
+import { getLoggedInUser } from "@/lib/auth";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
+  // Authenticate user
+  const user = await getLoggedInUser();
+  if (!user || user.role !== "admin") {
+    return NextResponse.json({ error: "Unauthorized access" }, { status: 403 });
+  }
+  
   try {
     const [
       totalUsers,
