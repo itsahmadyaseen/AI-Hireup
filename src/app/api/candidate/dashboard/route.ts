@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { getLoggedInUser } from "@/lib/auth"; // You should implement this
+import { getLoggedInUser } from "@/lib/auth";
 
 export async function GET() {
   try {
