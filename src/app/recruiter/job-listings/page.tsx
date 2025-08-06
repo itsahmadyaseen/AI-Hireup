@@ -145,7 +145,13 @@ const JobListingsPage = () => {
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+    <div
+      style={{
+        fontFamily: "Arial, sans-serif",
+        padding: "20px",
+        backgroundColor: "#fff",
+      }}
+    >
       {/* Top Nav Buttons */}
       <div
         style={{
@@ -199,7 +205,9 @@ const JobListingsPage = () => {
           alignItems: "center",
         }}
       >
-        <h2 style={{ fontSize: "24px" }}>Manage Your Job Listings</h2>
+        <h2 style={{ fontSize: "24px", color: "black" }}>
+          Manage Your Job Listings
+        </h2>
         <button
           onClick={() => setShowForm(!showForm)}
           style={{
@@ -358,12 +366,12 @@ const JobListingsPage = () => {
             marginBottom: "10px",
           }}
         >
-          <div>Job Title</div>
-          <div>Company</div>
-          <div>Skills</div>
-          <div>Location</div>
-          <div>Expiry Date</div>
-          <div>Status</div>
+          <div style={{ color: "black" }}>Job Title</div>
+          <div style={{ color: "black" }}>Company</div>
+          <div style={{ color: "black" }}>Skills</div>
+          <div style={{ color: "black" }}>Location</div>
+          <div style={{ color: "black" }}>Expiry Date</div>
+          <div style={{ color: "black" }}>Status</div>
         </div>
 
         {jobPostings.length === 0 ? (
@@ -373,7 +381,7 @@ const JobListingsPage = () => {
             No job listings yet. Click Create to add your first job!
           </p>
         ) : (
-          jobPostings.map((job, idx) => (
+          jobPostings.map((job) => (
             <div
               key={job.id}
               onClick={() => setSelectedJob(job)}
@@ -382,19 +390,19 @@ const JobListingsPage = () => {
                 gridTemplateColumns: "repeat(6, 1fr)",
                 padding: "12px",
                 borderRadius: "10px",
-                backgroundColor: "black",
+                backgroundColor: "#fff",
                 marginBottom: "8px",
                 cursor: "pointer",
                 transition: "0.3s",
-                color: "white", // ✅ ensure text is white by default
+                color: "black", // ✅ ensure text is white by default
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#f0f8ff";
-                e.currentTarget.style.color = "#000"; // ✅ switch text to black on hover
+                e.currentTarget.style.backgroundColor = "black";
+                e.currentTarget.style.color = "white"; // ✅ switch text to black on hover
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "black";
-                e.currentTarget.style.color = "white"; // ✅ switch text back to white
+                e.currentTarget.style.backgroundColor = "white";
+                e.currentTarget.style.color = "black"; // ✅ switch text back to white
               }}
             >
               <div>{job.title}</div>
@@ -430,11 +438,12 @@ const JobListingsPage = () => {
         >
           <div
             style={{
-              backgroundColor: "black",
+              backgroundColor: "#fff",
               padding: "30px",
               borderRadius: "12px",
               width: "500px",
               boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+              color: "black",
             }}
             onClick={(e) => e.stopPropagation()}
           >

@@ -68,7 +68,7 @@ const DashboardPage = () => {
     margin: "10px",
     padding: "20px",
     borderRadius: "10px",
-    background: "black",
+    background: "#F5F7FA",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
     transition: "transform 0.3s ease",
     cursor: "pointer",
@@ -102,7 +102,7 @@ const DashboardPage = () => {
   const recentApplications = allApplications.slice(0, 3);
 
   return (
-    <div style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
+    <div style={{ padding: "40px", fontFamily: "Arial, sans-serif", backgroundColor:'#fff' }}>
       {/* Navigation Tabs */}
       <div
         style={{
@@ -172,8 +172,8 @@ const DashboardPage = () => {
             }
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            <h3>My Jobs</h3>
-            <p>{data.jobs.length} job postings</p>
+            <h3 style={{ color: "black" }}>My Jobs</h3>
+            <p style={{ color: "black" }}>{data.jobs.length} job postings</p>
           </div>
           <div
             style={cardStyle}
@@ -182,8 +182,10 @@ const DashboardPage = () => {
             }
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            <h3>Total Applications</h3>
-            <p>{data.totalApplications} applications</p>
+            <h3 style={{ color: "black" }}>Total Applications</h3>
+            <p style={{ color: "black" }}>
+              {data.totalApplications} applications
+            </p>
           </div>
           <div
             style={cardStyle}
@@ -192,8 +194,10 @@ const DashboardPage = () => {
             }
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            <h3>Hired</h3>
-            <p>{applicationStatusCount.hired} candidates</p>
+            <h3 style={{ color: "black" }}>Hired</h3>
+            <p style={{ color: "black" }}>
+              {applicationStatusCount.hired} candidates
+            </p>
           </div>
         </div>
 
@@ -202,15 +206,19 @@ const DashboardPage = () => {
           style={{
             marginTop: "30px",
             padding: "20px",
-            background: "black",
+            background: "#F5F7FA",
             borderRadius: "12px",
             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <h3 style={{ marginBottom: "10px", fontSize: "20px" }}>
+          <h3
+            style={{ marginBottom: "10px", fontSize: "20px", color: "black" }}
+          >
             Applications by Status
           </h3>
-          <ul style={{ listStyle: "disc", paddingLeft: "20px" }}>
+          <ul
+            style={{ listStyle: "disc", paddingLeft: "20px", color: "black" }}
+          >
             <li>Under Review: {applicationStatusCount.underReview}</li>
             <li>
               Interview Scheduled: {applicationStatusCount.interviewScheduled}
@@ -225,12 +233,14 @@ const DashboardPage = () => {
           style={{
             marginTop: "40px",
             padding: "20px",
-            background: "black",
+            background: "#F5F7FA",
             borderRadius: "12px",
             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <h3 style={{ marginBottom: "20px", fontSize: "20px" }}>
+          <h3
+            style={{ marginBottom: "20px", fontSize: "20px", color: "black" }}
+          >
             Recent Applications
           </h3>
           <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
@@ -253,10 +263,12 @@ const DashboardPage = () => {
                   (e.currentTarget.style.transform = "scale(1)")
                 }
               >
-                <h4 style={{ margin: "0 0 8px", color:'black' }}>
+                <h4 style={{ margin: "0 0 8px", color: "black" }}>
                   👤 {app.candidate.firstName} {app.candidate.lastName}
                 </h4>
-                <p style={{ margin: 0, color:'black' }}>{app.status.replace("_", " ")}</p>
+                <p style={{ margin: 0, color: "black" }}>
+                  {app.status.replace("_", " ")}
+                </p>
               </div>
             ))}
           </div>
