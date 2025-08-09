@@ -146,7 +146,14 @@ export default function ApplicationHistory() {
                         <EyeIcon className="h-4 w-4 mr-1" />
                         View Job
                       </button>
+                      <button
+                        onClick={() => router.push(`/jobs/${application.jobId}`)}
+                        className="flex items-center text-blue-600 hover:text-blue-500 text-sm font-medium border rounded-md p-2 cursor-pointer"
+                      >
+                        Start Interview
+                      </button>
                     </div>
+                    
                   </div>
                 </div>
               </div>

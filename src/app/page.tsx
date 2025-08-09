@@ -13,7 +13,7 @@ export default function Home() {
 
     if (storedUser && token) {
       const user = JSON.parse(storedUser);
-      token = JSON.parse(token);
+      // token = JSON.parse(token);
       // console.log("user", typeof(token)); // now an object
       // console.log("role", user.role); // works
 
