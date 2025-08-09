@@ -53,7 +53,7 @@ export default function LoginForm() {
       if (response.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        router.push('/dashboard');
+        router.push(`/dashboard/${data.user.role}`);
       } else {
         setError(data.error || 'Something went wrong');
       }

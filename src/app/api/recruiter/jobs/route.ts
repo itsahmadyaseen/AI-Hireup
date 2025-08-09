@@ -84,6 +84,7 @@ export async function GET() {
         createdAt: "desc",
       },
     });
+    // console.log(jobs);
 
     return NextResponse.json({ jobs });
   } catch (error) {
