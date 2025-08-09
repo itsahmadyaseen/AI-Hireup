@@ -3,6 +3,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import JobCard from '../../../components/JobCard'; // Fixed import path
 import SearchAndFilter from '../../../components/SearchAndFilter';
+import Header from '../../../components/Header';
+
 
 export default function ExploreJobs() {
   const [jobs, setJobs] = useState([]);
@@ -95,14 +97,10 @@ export default function ExploreJobs() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Explore Jobs</h1>
-          <p className="text-gray-600">Discover your next career opportunity</p>
-        </div>
-      </div>
+      <Header />
+     
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search and Filter Section */}
@@ -140,6 +138,6 @@ export default function ExploreJobs() {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

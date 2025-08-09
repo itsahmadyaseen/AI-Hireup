@@ -27,20 +27,40 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-24">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Streamline Hiring with AI‑Powered Interviews</h1>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Conduct fair, data‑driven interviews in minutes and discover the best talent with
-            behavioral insights and automated scoring.
-          </p>
-          <div className="flex flex-col md:flex-row justify-center gap-4">
-            <button className="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition-colors">Get Started</button>
-            <a href="#how" className="px-8 py-3 border border-white rounded-lg font-medium hover:bg-white hover:text-indigo-600 transition-colors">Watch Demo</a>
-          </div>
-        </div>
-      </section>
+     {/* Hero Section */}
+<section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-24">
+  <div className="container mx-auto px-6 text-center">
+    <h1 className="text-4xl md:text-5xl font-bold mb-4">
+      Streamline Hiring with AI-Powered Interviews
+    </h1>
+    <p className="text-xl mb-8 max-w-2xl mx-auto">
+      Conduct fair, data-driven interviews in minutes and discover the best talent with
+      behavioral insights and automated scoring.
+    </p>
+
+    {/* Main Action Buttons */}
+    <div className="flex flex-col md:flex-row justify-center gap-4 mb-6">
+      <button className="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition-colors">
+        Get Started
+      </button>
+      <a
+        href="#how"
+        className="px-8 py-3 border border-white rounded-lg font-medium hover:bg-white hover:text-indigo-600 transition-colors"
+      >
+        Watch Demo
+      </a>
+    </div>
+    {/* Login Buttons */}
+    <div className="flex flex-col md:flex-row justify-center gap-4">
+      <button className="px-8 py-3 bg-indigo-800 text-white font-semibold rounded-full shadow hover:bg-indigo-700 transition-colors">
+        Candidate Login
+      </button>
+      <button className="px-8 py-3 bg-purple-800 text-white font-semibold rounded-full shadow hover:bg-purple-700 transition-colors">
+        Recruiter Login
+      </button>
+    </div>
+  </div>
+</section>
 
       {/* Overview Cards */}
       <section className="container mx-auto px-6 py-16">

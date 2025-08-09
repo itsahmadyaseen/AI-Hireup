@@ -11,11 +11,27 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleChange = (e) => {
+  interface LoginFormData {
+    email: string;
+    password: string;
+  }
+
+  interface ChangeEventTarget {
+    name: string;
+    value: string;
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  interface LoginResponse {
+    token: string;
+    user: Record<string, unknown>;
+    error?: string;
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setError('');
 
@@ -27,12 +43,12 @@ export default function LoginForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response: Response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-      const data = await response.json();
+      const data: LoginResponse = await response.json();
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
@@ -167,7 +183,7 @@ export default function LoginForm() {
               </button>
               <button className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
                 <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" className="h-5 w-5 mr-2" alt="Facebook" />
-                <span className="text-sm text-gray-700">Facebook</span>
+                 <span className="text-sm text-gray-700">Facebook</span>
               </button>
               <button className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
                 <img src="https://www.svgrepo.com/show/475689/twitter-color.svg" className="h-5 w-5 mr-2" alt="Twitter" />
@@ -179,7 +195,7 @@ export default function LoginForm() {
           {/* Sign Up */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              Don&#39;t have an account?{' '}
               <button
                 onClick={() => router.push('/signup')}
                 className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200"
