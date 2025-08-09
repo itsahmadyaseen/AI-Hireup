@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { verifyPassword, generateToken } from "@/lib/auth";
+import { prisma } from "@/app/api/lib/db";
+import { verifyPassword, generateToken } from "@/app/api/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json(
       {
         message: "Login successful",
+        token,
         user: {
           id: user.id,
           firstName: user.firstName,

@@ -1,7 +1,7 @@
 // /app/api/candidate/interviews/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { getLoggedInUser } from "@/lib/auth"; // adjust path to your auth options
+import { prisma } from "@/app/api/lib/db";
+import { getLoggedInUser } from "@/app/api/lib/auth"; // adjust path to your auth options
 
 export async function GET(req: NextRequest) {
   try {

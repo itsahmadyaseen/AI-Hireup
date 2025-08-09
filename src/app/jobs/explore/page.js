@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import JobCard from '../../../components/JobCard'; // Fixed import path
+import JobCard from '../../../components/JobCard';
 import SearchAndFilter from '../../../components/SearchAndFilter';
 import Header from '../../../components/Header';
-
 
 export default function ExploreJobs() {
   const [jobs, setJobs] = useState([]);
@@ -16,73 +15,55 @@ export default function ExploreJobs() {
     skills: []
   });
 
-  // Mock data - replace with your actual API call
-  const mockJobs = [
-    {
-      "id": 1,
-      "title": "Frontend Developer",
-      "description": "Work on React apps with real-time features.",
-      "company": "TechCorp",
-      "location": "Remote",
-      "jobType": "Full-Time",
-      "applicationDeadline": "2025-08-20T23:59:59.000Z",
-      "status": "active",
-      "createdAt": "2025-07-25T14:23:00.000Z",
-      "skills": ["React", "JavaScript", "TypeScript", "CSS"],
-      "recruiter": {
-        "id": 12,
-        "companyName": "TechCorp",
-        "email": "recruiter@techcorp.com"
-      }
-    },
-    {
-      "id": 2,
-      "title": "AI Research Intern",
-      "description": "Join our AI lab for cutting-edge NLP research.",
-      "company": "InnoAI",
-      "location": "Bangalore",
-      "jobType": "Internship",
-      "applicationDeadline": "2025-08-15T23:59:59.000Z",
-      "status": "active",
-      "createdAt": "2025-07-29T09:45:00.000Z",
-      "skills": ["Python", "Machine Learning", "NLP", "TensorFlow"],
-      "recruiter": {
-        "id": 15,
-        "companyName": "InnoAI",
-        "email": "ai-recruit@innoai.org"
-      }
-    }
-  ];
-
+  // Fetch jobs from API
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        setJobs(mockJobs);
-        setLoading(false);
+        setLoading(true);
+        const res = await fetch('/api/jobs', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch jobs');
+        }
+
+        const data = await res.json();
+        setJobs(data);
       } catch (error) {
         console.error('Error fetching jobs:', error);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchJobs();
-  }, [mockJobs]);
+  }, []);
 
   // Filter and search logic
   const filteredJobs = useMemo(() => {
     return jobs.filter(job => {
-      const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           job.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch =
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.description.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesJobType = !selectedFilters.jobType || job.jobType === selectedFilters.jobType;
-      const matchesLocation = !selectedFilters.location || job.location === selectedFilters.location;
-      const matchesSkills = selectedFilters.skills.length === 0 || 
-                           selectedFilters.skills.some(skill => 
-                             job.skills?.some(jobSkill => 
-                               jobSkill.toLowerCase().includes(skill.toLowerCase())
-                             )
-                           );
+      const matchesJobType =
+        !selectedFilters.jobType || job.jobType === selectedFilters.jobType;
+
+      const matchesLocation =
+        !selectedFilters.location || job.location === selectedFilters.location;
+
+      const matchesSkills =
+        selectedFilters.skills.length === 0 ||
+        selectedFilters.skills.some(skill =>
+          job.skillsRequired?.some(jobSkill =>
+            jobSkill.toLowerCase().includes(skill.toLowerCase())
+          )
+        );
 
       return matchesSearch && matchesJobType && matchesLocation && matchesSkills;
     });
@@ -98,9 +79,7 @@ export default function ExploreJobs() {
 
   return (
     <>
-      {/* Header */}
       <Header />
-     
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search and Filter Section */}
@@ -122,18 +101,30 @@ export default function ExploreJobs() {
         {/* Job Cards Grid */}
         {filteredJobs.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredJobs.map((job) => (
+            {filteredJobs.map(job => (
               <JobCard key={job.id} job={job} />
             ))}
           </div>
         ) : (
           <div className="text-center py-12">
             <div className="max-w-md mx-auto">
-              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
               <h3 className="mt-2 text-sm font-medium text-gray-900">No jobs found</h3>
-              <p className="mt-1 text-sm text-gray-500">Try adjusting your search criteria or filters.</p>
+              <p className="mt-1 text-sm text-gray-500">
+                Try adjusting your search criteria or filters.
+              </p>
             </div>
           </div>
         )}

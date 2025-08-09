@@ -1,3 +1,7 @@
+'use client'
+
+import { useRouter } from "next/navigation";
+
 // If you have lucide-react installed, use this version
 export default function JobCard({ job }) {
   const formatDate = (dateString) => {
@@ -6,6 +10,12 @@ export default function JobCard({ job }) {
       month: 'short',
       day: 'numeric'
     });
+  };
+
+  const router = useRouter();
+
+  const handleApply = () => {
+    router.push(`/jobs/${job.id}`);
   };
 
   const getJobTypeColor = (jobType) => {
@@ -89,7 +99,9 @@ export default function JobCard({ job }) {
         </div>
 
         {/* Apply Button */}
-        <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+        <button 
+        onClick={handleApply}
+        className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
           Apply Now
         </button>
       </div>

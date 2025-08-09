@@ -4,45 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CalendarIcon, ClockIcon, EyeIcon } from '@heroicons/react/24/outline';
 
-// Type definitions
-// Removed TypeScript interface for JavaScript compatibility
-
-// type FilterType = 'all' | 'pending' | 'accepted' | 'rejected'; // Removed for JS compatibility
-
-// Mock applications
-const MOCK_APPLICATIONS = [
-  {
-    id: 1,
-    jobId: 1,
-    jobTitle: "Frontend Developer",
-    company: "TechCorp",
-    location: "Remote",
-    appliedDate: "2025-08-05T10:30:00.000Z",
-    status: "pending",
-    jobType: "Full-Time"
-  },
-  {
-    id: 2,
-    jobId: 2,
-    jobTitle: "AI Research Intern",
-    company: "InnoAI",
-    location: "Bangalore",
-    appliedDate: "2025-08-03T14:20:00.000Z",
-    status: "accepted",
-    jobType: "Internship"
-  },
-  {
-    id: 3,
-    jobId: 3,
-    jobTitle: "Backend Developer",
-    company: "DevSolutions",
-    location: "Mumbai",
-    appliedDate: "2025-07-28T09:15:00.000Z",
-    status: "rejected",
-    jobType: "Full-Time"
-  }
-];
-
 export default function ApplicationHistory() {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,9 +11,36 @@ export default function ApplicationHistory() {
   const router = useRouter();
 
   useEffect(() => {
-    setLoading(true);
-    setApplications(MOCK_APPLICATIONS);
-    setLoading(false);
+    async function fetchApplications() {
+      try {
+        setLoading(true);
+        const res = await fetch('/api/candidate/applications'); // adjust if your route is different
+        if (!res.ok) {
+          throw new Error('Failed to fetch applications');
+        }
+        const data = await res.json();
+
+        // Map backend fields to your frontend display format
+        const formatted = data.map(app => ({
+          id: app.id,
+          jobId: app.job.id,
+          jobTitle: app.job.title,
+          company: app.job.company,
+          location: app.job.location || 'N/A', // fallback if location isn't provided
+          appliedDate: app.appliedAt,
+          status: app.status || (app.interview?.status ?? 'pending'),
+          jobType: app.job.jobType || 'N/A',
+        }));
+
+        setApplications(formatted);
+      } catch (error) {
+        console.error('Error fetching applications:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchApplications();
   }, []);
 
   const getStatusColor = (status) => {
@@ -100,9 +88,7 @@ export default function ApplicationHistory() {
           ].map(tab => (
             <button
               key={tab.key}
-              onClick={() => setFilter(
-                ['all', 'pending', 'accepted', 'rejected'].includes(tab.key) ? tab.key : 'all'
-              )}
+              onClick={() => setFilter(tab.key)}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
                 filter === tab.key
                   ? 'bg-white text-blue-600 shadow-sm'

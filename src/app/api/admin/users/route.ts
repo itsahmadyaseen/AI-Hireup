@@ -1,8 +1,8 @@
 // /api/admin/users
 
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { getLoggedInUser } from "@/lib/auth";
+import { prisma } from "@/app/api/lib/db";
+import { getLoggedInUser } from "@/app/api/lib/auth";
 import { Role } from "@prisma/client";
 
 // Get user details

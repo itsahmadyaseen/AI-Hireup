@@ -1,7 +1,7 @@
-import { prisma } from "@/lib/db";
+import { prisma } from "@/app/api/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { getLoggedInUser } from "@/lib/auth";
-import { uploadToCloudinary } from "@/lib/cloudinary";
+import { getLoggedInUser } from "@/app/api/lib/auth";
+import { uploadToCloudinary } from "@/app/api/lib/cloudinary";
 
 // Apply for a job 
 export async function POST(req: NextRequest) {

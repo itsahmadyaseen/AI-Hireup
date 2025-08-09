@@ -1,5 +1,5 @@
-import { getLoggedInUser } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { getLoggedInUser } from "@/app/api/lib/auth";
+import { prisma } from "@/app/api/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 // Get detailed view of an application

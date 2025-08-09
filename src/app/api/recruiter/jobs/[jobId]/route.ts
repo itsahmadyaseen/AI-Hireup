@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { getLoggedInUser } from "@/lib/auth";
+import { prisma } from "@/app/api/lib/db";
+import { getLoggedInUser } from "@/app/api/lib/auth";
 
 // Get detailed view of a job by recruiter
 export async function GET({ params }: { params: { jobId: string } }) {

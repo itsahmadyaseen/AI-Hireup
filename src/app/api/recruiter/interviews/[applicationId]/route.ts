@@ -2,8 +2,8 @@
 
 
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { getLoggedInUser } from "@/lib/auth";
+import { prisma } from "@/app/api/lib/db";
+import { getLoggedInUser } from "@/app/api/lib/auth";
 
 export async function POST(
   req: NextRequest,

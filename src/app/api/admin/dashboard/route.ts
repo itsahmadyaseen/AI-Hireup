@@ -1,9 +1,9 @@
 // /app/api/admin/dashboard/
 
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { prisma } from "@/app/api/lib/db";
 import { InterviewStatus } from "@prisma/client";
-import { getLoggedInUser } from "@/lib/auth";
+import { getLoggedInUser } from "@/app/api/lib/auth";
 
 export async function GET() {
   // Authenticate user

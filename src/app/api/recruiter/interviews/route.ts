@@ -1,8 +1,8 @@
 // /api/recruiter/interviews
 
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { getLoggedInUser } from "@/lib/auth";
+import { prisma } from "@/app/api/lib/db";
+import { getLoggedInUser } from "@/app/api/lib/auth";
 
 // Get all interviews scheduled by current user
 export async function GET(req: NextRequest) {

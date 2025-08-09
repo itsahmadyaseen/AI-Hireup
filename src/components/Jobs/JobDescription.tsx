@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { CalendarIcon, MapPinIcon, BriefcaseIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  CalendarIcon,
+  MapPinIcon,
+  BriefcaseIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
 
 // ==== Types ====
 type Recruiter = {
@@ -23,62 +28,24 @@ type Job = {
   applicationDeadline: string;
   status: string;
   createdAt: string;
-  skills: string[];
+  skillsRequired: string[];
   requirements: string[];
   responsibilities: string[];
   benefits: string[];
-  recruiter: Recruiter;
+  recruiter: {
+    id: number;
+    companyName: string;
+    email: string;
+    contactPerson: string;
+  };
 };
 
 type JobDescriptionProps = {
-  jobId: string | number;
+  job: Job;
 };
 
-// ==== Mock Jobs Data ====
-const JOBS: Job[] = [
-  {
-    id: 1,
-    title: 'Frontend Developer',
-    description:
-      'Develop and maintain cutting-edge web applications using React...',
-    company: 'TechCorp',
-    location: 'Remote',
-    jobType: 'Full-Time',
-    salary: '$80,000 - $120,000',
-    applicationDeadline: '2025-08-20T23:59:59.000Z',
-    status: 'active',
-    createdAt: '2025-07-25T14:23:00.000Z',
-    skills: ['React', 'JavaScript', 'TypeScript', 'CSS'],
-    requirements: [
-      '3+ years experience with React.js',
-      'Proficiency in JavaScript/TypeScript',
-      'Experience with CSS/SASS',
-      'Knowledge of REST APIs',
-    ],
-    responsibilities: [
-      'Write reusable, testable, scalable code',
-      'Work closely with backend engineers',
-      'Review code and mentor juniors',
-      'Contribute to architectural decisions',
-    ],
-    benefits: [
-      'Remote friendly',
-      'Flexible hours',
-      'Health insurance',
-      'Paid time off',
-    ],
-    recruiter: {
-      id: 1,
-      companyName: 'TechCorp',
-      email: 'recruiter@techcorp.com',
-      contactPerson: 'Alex Smith',
-    },
-  },
-  // Add more jobs as needed
-];
-
-export default function JobDescription({ jobId }: JobDescriptionProps) {
-  const [job, setJob] = useState<Job | null>(null);
+export default function JobDescription({ job }: JobDescriptionProps) {
+  // const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [applying, setApplying] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -86,55 +53,73 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
 
   const router = useRouter();
 
-  useEffect(() => {
-    setLoading(true);
-    const foundJob = JOBS.find((j) => j.id === Number(jobId));
-    setJob(foundJob || null);
-    setLoading(false);
-  }, [jobId]);
+ 
 
   const handleApplyClick = () => {
     setShowModal(true);
   };
 
-  const handleResumeSubmit = (e: React.FormEvent) => {
+  const handleResumeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!resumeFile) {
-      alert('Please upload your resume before submitting.');
+      alert("Please upload your resume before submitting.");
       return;
     }
-    setApplying(true);
 
-    setTimeout(() => {
-      setApplying(false);
+    try {
+      setApplying(true);
+      const formData = new FormData();
+      formData.append("jobId", String(job.id));
+      formData.append("resume", resumeFile);
+
+      const res = await fetch("/api/candidate/applications/", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Failed to apply for job");
+        return;
+      }
+
+      alert("Application submitted successfully!");
       setShowModal(false);
-      router.push('/applications');
-    }, 1000);
+      router.push("/applications");
+    } catch (error) {
+      console.error("Error applying for job:", error);
+      alert("Something went wrong while applying");
+    } finally {
+      setApplying(false);
+    }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-gray-50">
+  //       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  //     </div>
+  //   );
+  // }
 
   if (!job) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4 text-gray-900">Job Not Found</h2>
+          <h2 className="text-2xl font-bold mb-4 text-gray-900">
+            Job Not Found
+          </h2>
           <button
-            onClick={() => router.push('/jobs/explore')}
+            onClick={() => router.push("/jobs/explore")}
             className="text-blue-600 hover:text-blue-500"
           >
             Back to Jobs
@@ -177,7 +162,9 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
                 </div>
                 <div className="flex items-center text-gray-600">
                   <ClockIcon className="h-5 w-5 mr-2" />
-                  <span className="text-sm">Posted {formatDate(job.createdAt)}</span>
+                  <span className="text-sm">
+                    Posted {formatDate(job.createdAt)}
+                  </span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <CalendarIcon className="h-5 w-5 mr-2" />
@@ -202,7 +189,7 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
                 disabled={applying}
                 className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 min-w-[120px]"
               >
-                {applying ? 'Applying...' : 'Apply Now'}
+                {applying ? "Applying..." : "Apply Now"}
               </button>
             </div>
           </div>
@@ -212,7 +199,7 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
               Required Skills
             </h3>
             <div className="flex flex-wrap gap-2">
-              {job.skills.map((skill, i) => (
+              {job.skillsRequired.split(',').map((skill, i) => (
                 <span
                   key={i}
                   className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
@@ -227,7 +214,7 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
         {/* Job Sections */}
         <div className="bg-white rounded-lg shadow-lg p-8 space-y-8">
           {/* Requirements */}
-          <section>
+          {/* <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Requirements
             </h2>
@@ -236,10 +223,10 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
                 <li key={i}>{req}</li>
               ))}
             </ul>
-          </section>
+          </section> */}
 
           {/* Responsibilities */}
-          <section>
+          {/* <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Responsibilities
             </h2>
@@ -248,20 +235,20 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
                 <li key={i}>{res}</li>
               ))}
             </ul>
-          </section>
+          </section> */}
 
           {/* Benefits */}
-          <section>
+          {/* <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Benefits</h2>
             <ul className="list-disc pl-5 space-y-2 text-gray-700">
               {job.benefits.map((benefit, i) => (
                 <li key={i}>{benefit}</li>
               ))}
             </ul>
-          </section>
+          </section> */}
 
           {/* Contact */}
-          <section className="border-t pt-6">
+          {/* <section className="border-t pt-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Contact Information
             </h2>
@@ -276,7 +263,7 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
                 <strong>Email:</strong> {job.recruiter.email}
               </p>
             </div>
-          </section>
+          </section> */}
         </div>
         {/* Bottom Apply Button */}
         <div className="mt-8 text-center">
@@ -285,7 +272,7 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
             disabled={applying}
             className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-12 py-4 rounded-lg font-medium text-lg transition-colors duration-200"
           >
-            {applying ? 'Applying...' : 'Apply for This Position'}
+            {applying ? "Applying..." : "Apply for This Position"}
           </button>
         </div>
       </div>
@@ -317,7 +304,7 @@ export default function JobDescription({ jobId }: JobDescriptionProps) {
                   disabled={applying}
                   className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {applying ? 'Submitting...' : 'Submit'}
+                  {applying ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </form>

@@ -1,7 +1,7 @@
 // /api/jobs
 
-import { getLoggedInUser } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { getLoggedInUser } from "@/app/api/lib/auth";
+import { prisma } from "@/app/api/lib/db";
 import { NextResponse } from "next/server";
 
 // Get all the jobs with application count

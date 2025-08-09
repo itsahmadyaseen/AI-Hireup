@@ -1,29 +1,25 @@
-// /api/jobs/[jobId]
-
-import { getLoggedInUser } from "@/lib/auth";
-import { prisma } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { getLoggedInUser } from "../../lib/auth";
+import { prisma } from "../../lib/db";
 
-// Get a detailed view of job by any user
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ jobId: string }> }
 ) {
-  // Authenticate user
+  const { jobId } = await context.params; // ✅ Await before using
   const user = await getLoggedInUser();
   if (!user) {
     return NextResponse.json({ error: "User not logged in" }, { status: 401 });
   }
 
   try {
-    const jobId = parseInt(params.id);
-
-    if (isNaN(jobId)) {
+    const parsedId = parseInt(jobId);
+    if (isNaN(parsedId)) {
       return NextResponse.json({ error: "Invalid job ID" }, { status: 400 });
     }
 
     const job = await prisma.job.findUnique({
-      where: { id: jobId },
+      where: { id: parsedId },
       select: {
         id: true,
         title: true,
@@ -49,6 +45,7 @@ export async function GET(
         },
       },
     });
+    // console.log(job);
 
     if (!job) {
       return NextResponse.json({ error: "Job not found" }, { status: 404 });
