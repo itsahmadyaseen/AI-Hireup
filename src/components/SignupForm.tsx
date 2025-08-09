@@ -81,12 +81,12 @@ export default function SignupForm() {
     if (formData.password !== formData.confirmPassword) {
       return setError('Passwords do not match');
     }
-    if (formData.password.length < 8) {
-      return setError('Password must be at least 8 characters');
-    }
-    if (!agreeToTerms) {
-      return setError('You must agree to the terms');
-    }
+    // if (formData.password.length < 8) {
+    //   return setError('Password must be at least 8 characters');
+    // }
+    // if (!agreeToTerms) {
+    //   return setError('You must agree to the terms');
+    // }
 
     setIsLoading(true);
 
