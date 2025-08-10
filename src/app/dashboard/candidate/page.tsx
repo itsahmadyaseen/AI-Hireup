@@ -30,6 +30,8 @@ import {
   SkillItemProps,
   JobCardProps,
 } from "../../../types/dashboard";
+import { Router } from "next/router";
+import { useRouter } from "next/navigation";
 
 function CandidateDashboard(): JSX.Element {
   const [data, setData] = useState<DashboardData>({
@@ -42,6 +44,8 @@ function CandidateDashboard(): JSX.Element {
     loading: true,
     error: null,
   });
+
+  const router = useRouter();
 
   const setMockData = useCallback((): void => {
     setData({
@@ -440,7 +444,9 @@ function CandidateDashboard(): JSX.Element {
                       icon={<FaSearch />}
                       text="Browse Jobs"
                       color="blue"
-                      onClick={() => handleQuickAction("browse-jobs")}
+                      onClick={() => {
+                        router.push("/jobs/explore");
+                      }}
                     />
                     <ActionButton
                       icon={<FaPlay />}
@@ -535,8 +541,6 @@ function CandidateDashboard(): JSX.Element {
                     )}
                   </div>
                 </div> */}
-
-              
 
                 {/* Recommended Jobs */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
