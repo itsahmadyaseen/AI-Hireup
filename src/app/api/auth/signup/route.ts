@@ -1,25 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/app/api/lib/db'
-import { hashPassword, generateToken } from '@/app/api/lib/auth'
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/app/api/lib/db";
+import { hashPassword, generateToken } from "@/app/api/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const firstName = body.firstName?.trim()
-    const lastName = body.lastName?.trim()
-    const email = body.email?.trim().toLowerCase()
-    const password = body.password
-    const inputRole = body.role?.toLowerCase()
+    const body = await request.json();
+    const firstName = body.firstName?.trim();
+    const lastName = body.lastName?.trim();
+    const email = body.email?.trim().toLowerCase();
+    const password = body.password;
+    const inputRole = body.role?.toLowerCase();
 
-    const allowedRoles = ['candidate', 'recruiter', 'admin']
-    const role = allowedRoles.includes(inputRole) ? inputRole : 'candidate'
+    const allowedRoles = ["candidate", "recruiter", "admin"];
+    const role = allowedRoles.includes(inputRole) ? inputRole : "candidate";
 
     // Validate input
     if (!firstName || !lastName || !email || !password) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: "All fields are required" },
         { status: 400 }
-      )
+      );
     }
 
     // Check if user already exists
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     // }
 
     // Hash password
-    const hashedPassword = await hashPassword(password)
+    const hashedPassword = await hashPassword(password);
 
     // Create user
     const user = await prisma.user.create({
@@ -44,34 +44,50 @@ export async function POST(request: NextRequest) {
         lastName,
         email,
         password: hashedPassword,
-        role
+        role,
       },
       select: {
         id: true,
         firstName: true,
         lastName: true,
         email: true,
-        role: true
-      }
-    })
+        role: true,
+      },
+    });
 
     // Generate token
-    const token = generateToken(user.id, user.role, user.email)
+    const token = generateToken(user.id, user.role, user.email);
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
-        message: 'User created successfully',
+        message: "User created successfully",
         user,
-        token
+        token,
       },
       { status: 201 }
-    )
+    );
 
+    const payload = {
+      token,
+      role: user.role,
+    };
+
+    response.cookies.set({
+      name: "auth",
+      value: JSON.stringify(payload),
+      // httpOnly: true,
+      // secure: process.env.NODE_ENV === "production",
+      // sameSite: "lax",
+      // path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return response;
   } catch (error: any) {
-    console.error('Signup error:', error)
+    console.error("Signup error:", error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 }
-    )
+    );
   }
 }

@@ -6,6 +6,7 @@ import { getLoggedInUser } from "@/app/api/lib/auth";
 export async function GET() {
   try {
     const user = await getLoggedInUser();
+    
     if (!user || user.role !== "recruiter") {
       return NextResponse.json(
         { error: "Unauthorized access" },

@@ -51,15 +51,25 @@ export function verifyToken(token: string): JwtPayload | null {
 }
 
 export async function getLoggedInUser() {
-  const cookieStore = await cookies(); // no await needed here
-  const token = cookieStore.get("token")?.value;
+  const cookieStore = await cookies();
+  const authCookie = cookieStore.get("auth")?.value;
 
-  if (!token) return null;
+  if (!authCookie) return null;
 
   try {
-    return verifyToken(token);
+    // parse
+
+    const { token, role } = JSON.parse(authCookie);
+
+    if (!token) return null;
+
+    // Verify token
+    const user = verifyToken(token);
+
+    // Attach role from cookie (you could also get it from JWT if stored there)
+    return { ...user, role };
   } catch (err) {
-    console.error("Invalid token:", err);
+    console.error("Invalid auth cookie:", err);
     return null;
   }
 }

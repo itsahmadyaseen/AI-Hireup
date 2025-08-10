@@ -56,14 +56,19 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
 
+    const payload = {
+      token,
+      role: user.role,
+    };
+
     response.cookies.set({
-      name: "token",
-      value: token,
+      name: "auth",
+      value: JSON.stringify(payload),
       // httpOnly: true,
       // secure: process.env.NODE_ENV === "production",
       // sameSite: "lax",
       // path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     return response;

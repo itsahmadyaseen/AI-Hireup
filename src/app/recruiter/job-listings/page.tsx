@@ -205,9 +205,7 @@ const JobListingsPage = () => {
           alignItems: "center",
         }}
       >
-        <h2 style={{ fontSize: "24px", color: "black" }}>
-          Manage Your Job Listings
-        </h2>
+        <h2 style={{ fontSize: "24px" }}>Manage Your Job Listings</h2>
         <button
           onClick={() => setShowForm(!showForm)}
           style={{
@@ -230,7 +228,6 @@ const JobListingsPage = () => {
         <form
           onSubmit={handleSubmit}
           style={{
-            backgroundColor: "black",
             borderRadius: "12px",
             padding: "25px",
             marginTop: "30px",
@@ -366,12 +363,12 @@ const JobListingsPage = () => {
             marginBottom: "10px",
           }}
         >
-          <div style={{ color: "black" }}>Job Title</div>
-          <div style={{ color: "black" }}>Company</div>
-          <div style={{ color: "black" }}>Skills</div>
-          <div style={{ color: "black" }}>Location</div>
-          <div style={{ color: "black" }}>Expiry Date</div>
-          <div style={{ color: "black" }}>Status</div>
+          <div>Job Title</div>
+          <div>Company</div>
+          <div>Skills</div>
+          <div>Location</div>
+          <div>Expiry Date</div>
+          <div>Status</div>
         </div>
 
         {jobPostings.length === 0 ? (
@@ -394,16 +391,16 @@ const JobListingsPage = () => {
                 marginBottom: "8px",
                 cursor: "pointer",
                 transition: "0.3s",
-                color: "black", // ✅ ensure text is white by default
+                // color: "black", // ✅ ensure text is white by default
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "black";
-                e.currentTarget.style.color = "white"; // ✅ switch text to black on hover
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "white";
-                e.currentTarget.style.color = "black"; // ✅ switch text back to white
-              }}
+              // onMouseEnter={(e) => {
+              //   e.currentTarget.style.backgroundColor = "black";
+              //   e.currentTarget.style.color = "white"; // ✅ switch text to black on hover
+              // }}
+              // onMouseLeave={(e) => {
+              //   e.currentTarget.style.backgroundColor = "white";
+              //   e.currentTarget.style.color = "black"; // ✅ switch text back to white
+              // }}
             >
               <div>{job.title}</div>
               <div>{job.company}</div>
@@ -443,7 +440,6 @@ const JobListingsPage = () => {
               borderRadius: "12px",
               width: "500px",
               boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
-              color: "black",
             }}
             onClick={(e) => e.stopPropagation()}
           >
